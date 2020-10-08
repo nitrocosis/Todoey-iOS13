@@ -11,7 +11,6 @@ import CoreData
 
 class TodoListVC: UITableViewController {
     
-  let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
 
     var itemArray = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -20,7 +19,9 @@ class TodoListVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-     //  loadItems()
+       loadItems()
+        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     //MARK - Tableview Datasource Methods
@@ -101,18 +102,16 @@ class TodoListVC: UITableViewController {
         
     }
     
-/*    func loadItems() {
+    func loadItems() {
     
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-            itemArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print(error.localizedDescription)
-            }
-    }
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print(error.localizedDescription)
+        }
         
-    } */
+    }
     
 
 }
