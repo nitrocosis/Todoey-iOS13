@@ -105,15 +105,15 @@ class TodoListVC: UITableViewController {
         
     }
     
-    func loadItems() {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
     
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
         do {
             itemArray = try context.fetch(request)
         } catch {
             print(error.localizedDescription)
         }
         
+        tableView.reloadData()
     }
     
 
@@ -129,12 +129,8 @@ extension TodoListVC: UISearchBarDelegate {
         
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        do {
-            itemArray = try context.fetch(request)
-        } catch {
-            print(error.localizedDescription)
-        }
+       loadItems(with: request)
         
-        tableView.reloadData()
      }
 }
+
