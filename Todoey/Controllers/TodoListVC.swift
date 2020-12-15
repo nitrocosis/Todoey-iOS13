@@ -122,6 +122,7 @@ class TodoListVC: UITableViewController {
 //MARK: - Search bar methods
 
 extension TodoListVC: UISearchBarDelegate {
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request : NSFetchRequest<Item> = Item.fetchRequest()
         
@@ -132,5 +133,16 @@ extension TodoListVC: UISearchBarDelegate {
        loadItems(with: request)
         
      }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+            }
+        }
+    }
+    
 }
 
